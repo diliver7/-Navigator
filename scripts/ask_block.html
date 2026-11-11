@@ -1,0 +1,70 @@
+  <!-- AI 问答台 -->
+  <section id="ask" data-route="try" class="py-14">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <span class="chip"><span class="h-1.5 w-1.5 animate-pulse rounded-full bg-mint"></span>ASK CONSOLE · 问答台</span>
+        <h2 class="mt-4 text-[28px] font-bold leading-[1.2] text-white sm:text-[34px]">
+          把「我该怎么学」问清楚，<span class="bg-gradient-to-r from-brand-soft via-brand to-mint bg-clip-text text-transparent">每句都有出处</span>
+        </h2>
+        <p class="mt-2 max-w-2xl text-sm leading-7 text-slate-400">六类问题可以直接问：方法原理、记忆复习、专注效率、计划执行、考前应试、AI 辅助。回答会给结论、可执行要点、原文引用和下一步动作，引用都能点开核对原段落。</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <span id="ask-mode" class="rounded-full border border-mint/25 bg-mint/10 px-3 py-1 text-[10.5px] font-medium text-mint">离线模式</span>
+        <span id="ask-stat" class="rounded-full border border-line bg-black/25 px-3 py-1 font-mono text-[10.5px] text-slate-500">已答 0 问</span>
+      </div>
+    </div>
+
+    <div class="mt-6 grid gap-4 lg:grid-cols-[1.6fr_0.9fr]">
+      <!-- 左：对话 -->
+      <div class="panel flex flex-col overflow-hidden">
+        <div class="flex items-center justify-between gap-3 border-b border-line px-4 py-3">
+          <div class="flex items-center gap-2.5">
+            <span class="relative grid h-8 w-8 place-items-center rounded-full bg-[radial-gradient(circle_at_32%_28%,#9db2ff,#4c63d2_55%,#111a37)]">
+              <svg class="h-4 w-4 text-white/90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m16 8-2.5 5.5L8 16l2.5-5.5L16 8z"/></svg>
+            </span>
+            <div>
+              <p class="text-[12.5px] font-semibold text-white">小引 · 学习方法问答</p>
+              <p class="text-[10px] text-slate-500" id="ask-hint">未配置 Key：本地检索 + 摘录回答，全部离线</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button onclick="askCopy()" class="rounded-lg border border-line bg-black/20 px-2.5 py-1 text-[10.5px] text-slate-400 transition hover:border-white/25 hover:text-white">复制</button>
+            <button onclick="askClear()" class="rounded-lg border border-line bg-black/20 px-2.5 py-1 text-[10.5px] text-slate-400 transition hover:border-white/25 hover:text-white">清空</button>
+          </div>
+        </div>
+        <div id="ask-thread" class="h-[460px] space-y-3 overflow-y-auto p-4"></div>
+        <div class="border-t border-line bg-black/15 p-3">
+          <div id="ask-cats" class="mb-2.5 flex flex-wrap gap-1.5"></div>
+          <div class="flex items-end gap-2">
+            <textarea id="ask-input" rows="1" placeholder="问点什么，例如：交错练习和间隔重复要怎么配合？"
+              class="max-h-[120px] min-h-[42px] flex-1 resize-none rounded-xl border border-line bg-black/30 px-3.5 py-2.5 text-[13px] leading-5 text-slate-100 outline-none transition placeholder:text-slate-600 focus:border-brand/50"></textarea>
+            <button onclick="askSend()" id="ask-btn" class="btn-primary !px-4 !py-2.5 !text-xs">提问</button>
+          </div>
+          <div id="ask-chips" class="mt-2 flex flex-wrap gap-1.5"></div>
+        </div>
+      </div>
+
+      <!-- 右：引用 / 推荐 / 模板 -->
+      <div class="space-y-3">
+        <div class="panel p-4">
+          <div class="flex items-center justify-between">
+            <p class="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-slate-400">本次引用</p>
+            <span class="font-mono text-[10px] text-slate-600" id="ask-ref-count">0 条</span>
+          </div>
+          <div id="ask-sources" class="mt-2.5 space-y-2"></div>
+        </div>
+        <div class="panel p-4">
+          <div class="flex items-center justify-between">
+            <p class="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-slate-400">顺手看看这几篇</p>
+            <button onclick="askShuffle()" class="text-[10px] text-slate-600 transition hover:text-mint">换一批</button>
+          </div>
+          <div id="ask-related" class="mt-2.5 space-y-1.5"></div>
+        </div>
+        <div class="panel p-4">
+          <p class="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-slate-400">提问模板</p>
+          <div id="ask-templates" class="mt-2.5 space-y-1.5"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
