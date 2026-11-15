@@ -2,7 +2,7 @@
   "name": "navigator-ai",
   "version": "1.0.0",
   "private": true,
-  "description": "引航 · AI Agent 学习与办公任务助手",
+  "description": "引航 Navigator · 学习方法与效率工具站",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

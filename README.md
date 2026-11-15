@@ -171,6 +171,54 @@ python scripts/patch_v3.py && python scripts/patch_board.py
 
 58 篇笔记最终切成 225 个索引分块，浏览器内一次检索约 1 ms。问答台对同一篇笔记的多个分块做去重，引用面板里一篇只出现一次；实测六个典型问题各得 2–4 篇引用、4–6 条要点。
 
+### 代码规范
+
+| 维度 | 约定 |
+| --- | --- |
+| 目录结构 | `src/app` 路由与 API、`src/components` UI、`src/lib` 检索引擎 / Agent / AI 客户端、`src/store` 状态、`src/types` 类型、`scripts` 内容源与构建脚本、`data` 笔记数据，按职责分层 |
+| 类型 | TypeScript `strict` 全程开启，跨模块的 Agent 事件与工具协议统一定义在 `src/types/agent.ts`；`npm run typecheck` 可校验 |
+| 注释 | 关键算法（TF-IDF 标题加权、双阈值与双轮召回、抽句打分、SSE 失败降级、工具注册）均写说明「为什么这样设计」的注释，不复述代码 |
+| 命名与风格 | 组件 PascalCase、钩子 `use-` 前缀、工具函数 camelCase；类名统一经 `src/lib/utils.ts` 的 `cn()`（`clsx` + `tailwind-merge`）合并，不手工拼接 |
+| 单一数据源 | 笔记内容只改 `scripts/learning_notes*.py`，再跑 `python scripts/sync_knowledge.py` 同步到 `data/` 与 `index.html`，避免多处手工维护 |
+
+---
+
+## ⚙️ 环境配置
+
+### 运行环境
+
+| 组件 | 要求 | 本项目实测 |
+| --- | --- | --- |
+| 浏览器 | 支持 ES2020 / Web Speech API 的现代浏览器（Chrome / Edge 均可） | Edge |
+| Node.js | ≥ 18.17（Next.js 14 要求） | v22.22.2 |
+| npm | ≥ 9，随 Node 安装 | 10.9.7 |
+| Python | ≥ 3.10，**仅**用于 `scripts/` 下的资料同步与构建脚本，只用标准库（`pathlib` / `json`）及仓库内模块，无第三方依赖 | 3.13.14 |
+
+**单文件静态版不需要上述任何环境**：双击 `index.html` 即可运行，零安装、零依赖、可断网。
+
+### 依赖清单
+
+| 清单 / 文件 | 说明 | 安装方式 |
+| --- | --- | --- |
+| `package.json` | Next.js 14 / React 18 / TypeScript / Tailwind CSS 等运行时与开发依赖 | `npm ci` |
+| `package-lock.json` | 锁定依赖版本，保证任意机器可复现安装 | 随仓库提交，勿手工编辑 |
+| `scripts/*.py` | 58 篇笔记内容源、同步与构建脚本，仅标准库 | 无需 `pip install` |
+
+```bash
+npm ci                 # 首次按 lock 文件安装依赖
+npm run typecheck      # TypeScript strict 类型检查
+```
+
+### 环境变量模板
+
+模板文件为 `.env.example`，复制到 `.env.local` 后按需填写；`.env.local` 已被 `.gitignore` 忽略，**真实密钥不入库**：
+
+```bash
+cp .env.example .env.local          # Windows: copy .env.example .env.local
+```
+
+三个变量均为可选（完整说明见下方「🚀 运行」章节的变量表），静态版也可在页面「可选增强设置」里临时填写，只存浏览器 localStorage。
+
 ---
 
 ## 🚀 运行
@@ -237,11 +285,10 @@ npm run typecheck
 
 ## 👥 团队信息
 
-- 队伍名称：待填写
-- 参赛院校：待填写
-- 组别：待填写
-- 成员：待填写
-- 指导教师：待填写
+- 队伍名称：玛卡巴卡队
+- 参赛院校：西安明德理工学院
+- 组别：B组
+- 成员：黄晓可、刘子涵、邱萌萌
 
 ---
 
